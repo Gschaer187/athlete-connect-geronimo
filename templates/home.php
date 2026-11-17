@@ -64,10 +64,16 @@
       <h2 id="contact-title">Anfrage senden</h2>
       <p class="contact-intro">Ich antworte in der Regel innert einer Woche. Felder mit <span class="req">Pflicht</span> müssen ausgefüllt sein.</p>
 
-      <?php if ($submitted): ?>
+      <?php if ($sent): ?>
         <!-- role="status": Screenreader lesen die Meldung automatisch vor -->
         <div class="notice" role="status">
-          Der Browser hat Daten gesendet. Speichern und serverseitiges Prüfen folgen in Etappe 3 und 4.
+          Danke! Ihre Anfrage ist angekommen. Ich melde mich in der Regel innert einer Woche.
+        </div>
+      <?php endif; ?>
+
+      <?php if ($requestFailed): ?>
+        <div class="notice notice--error" role="alert">
+          Bitte füllen Sie alle Pflichtfelder aus.
         </div>
       <?php endif; ?>
 
@@ -80,14 +86,16 @@
           <div class="field">
             <label for="name">Name <span class="req">Pflicht</span></label>
             <input id="name" name="name" type="text" required maxlength="80"
-                   autocomplete="name" aria-describedby="name-error">
+                   autocomplete="name" aria-describedby="name-error"
+                   value="<?= e($values['name']) ?>">
             <p id="name-error" class="field-error" aria-live="polite"></p>
           </div>
 
           <div class="field">
             <label for="organisation">Firma oder Organisation <span class="opt">optional</span></label>
             <input id="organisation" name="organisation" type="text" maxlength="100"
-                   autocomplete="organization" aria-describedby="organisation-help organisation-error">
+                   autocomplete="organization" aria-describedby="organisation-help organisation-error"
+                   value="<?= e($values['organisation']) ?>">
             <p id="organisation-help" class="field-help">Bei Sponsoring- und Materialanfragen hilfreich.</p>
             <p id="organisation-error" class="field-error" aria-live="polite"></p>
           </div>
@@ -96,7 +104,8 @@
             <label for="email">Geschäftliche E-Mail <span class="req">Pflicht</span></label>
             <input id="email" name="email" type="email" required maxlength="160"
                    autocomplete="email" inputmode="email"
-                   aria-describedby="email-help email-error">
+                   aria-describedby="email-help email-error"
+                   value="<?= e($values['email']) ?>">
             <p id="email-help" class="field-help">An diese Adresse geht meine Antwort.</p>
             <p id="email-error" class="field-error" aria-live="polite"></p>
           </div>
@@ -110,11 +119,11 @@
             <label for="request_type">Art der Anfrage <span class="req">Pflicht</span></label>
             <select id="request_type" name="request_type" required aria-describedby="request_type-error">
               <option value="">Bitte wählen</option>
-              <option value="sponsoring">Sponsoring / Partnerschaft</option>
-              <option value="material">Materialpartner (Ausrüstung)</option>
-              <option value="media">Medien / Interview</option>
-              <option value="club">Club / Camp</option>
-              <option value="event">Event / Auftritt</option>
+              <?php foreach ($requestTypes as $typeValue => $typeLabel): ?>
+                <option value="<?= e($typeValue) ?>" <?= $values['request_type'] === $typeValue ? 'selected' : '' ?>>
+                  <?= e($typeLabel) ?>
+                </option>
+              <?php endforeach; ?>
             </select>
             <p id="request_type-error" class="field-error" aria-live="polite"></p>
           </div>
@@ -122,7 +131,7 @@
           <div class="field">
             <label for="message">Nachricht <span class="req">Pflicht</span></label>
             <textarea id="message" name="message" rows="6" required minlength="20" maxlength="1200"
-                      aria-describedby="message-help message-error"></textarea>
+                      aria-describedby="message-help message-error"><?= e($values['message']) ?></textarea>
             <p id="message-help" class="field-help">Was möchten Sie anbieten oder anfragen, und für welchen Zeitraum? 20 bis 1200 Zeichen.</p>
             <p id="message-error" class="field-error" aria-live="polite"></p>
           </div>

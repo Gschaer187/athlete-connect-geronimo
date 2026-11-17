@@ -199,6 +199,8 @@ button:focus-visible { outline-color: var(--navy); }
   font-weight: 600;
 }
 
+.notice--error { background: #fff6f5; border-left-color: var(--error); color: var(--error); }
+
 /* ---------- Footer ---------- */
 .site-footer { padding: 1.5rem var(--space); background: var(--navy); color: rgba(255, 255, 255, .7); font-size: .85rem; }
 
